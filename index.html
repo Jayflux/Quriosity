@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Quriosity - Conversation Card Games</title>
+  <meta name="description" content="Quriosity - Conversation Card Games. Connect deeply, break the ice, and spark honest conversations with curated decks.">
+  <meta name="theme-color" content="#0A0B0E">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- ============================================ -->
+    <!-- SCREEN 1: HALAMAN AWAL (PILIH JENIS GAME)    -->
+    <!-- ============================================ -->
+    <div id="homeView" class="view-screen">
+      <!-- Home Header -->
+      <header class="app-header">
+        <div class="brand-badge" style="cursor:default">
+          <span class="brand-title">Quriosity</span>
+          <span style="color:rgba(255,255,255,0.25)">•</span>
+          <span style="font-size:0.75rem;color:var(--text-secondary);font-weight:600">Card Games</span>
+        </div>
+
+        <div class="header-actions">
+          <!-- Audio toggle -->
+          <button id="homeSoundToggleBtn" class="icon-btn" title="Suara FX" aria-label="Toggle Sound">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+          </button>
+
+          <!-- Language toggle -->
+          <button id="homeLangToggleBtn" class="icon-btn" style="font-weight:700;font-size:0.75rem" title="Ganti Bahasa (ID / EN)">
+            ID
+          </button>
+
+          <!-- Favorites button -->
+          <button id="homeFavoritesBtn" class="icon-btn" title="Pertanyaan Favorit" aria-label="Favorites">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Hero Intro -->
+      <section class="home-hero">
+        <div class="home-badge">
+          <span>✨ CONVERSATION DECKS</span>
+        </div>
+        <h1 class="home-title" id="homeHeroTitle">Pilih Jenis Game</h1>
+        <p class="home-subtitle" id="homeHeroSubtitle">
+          Pilih mode permainan dan deck kartu untuk mencairkan suasana, memperdalam hubungan, atau seru-seruan bareng teman.
+        </p>
+      </section>
+
+      <!-- Game Mode Selection -->
+      <section class="mode-section">
+        <div class="section-label">
+          <span id="labelModeSelect">Mode Permainan</span>
+        </div>
+        <div class="mode-pills-grid">
+          <!-- Mode 1: Classic 21 -->
+          <div id="modeTwentyOnePill" class="mode-pill-card is-active">
+            <div class="mode-pill-title">
+              <span>🎯</span>
+              <span id="txtMode21Title">Klasik 21 Q</span>
+            </div>
+            <div class="mode-pill-desc" id="txtMode21Desc">Target 21 pertanyaan terarah & progress bar</div>
+          </div>
+
+          <!-- Mode 2: Endless -->
+          <div id="modeEndlessPill" class="mode-pill-card">
+            <div class="mode-pill-title">
+              <span>♾️</span>
+              <span id="txtModeEndlessTitle">Tanpa Batas</span>
+            </div>
+            <div class="mode-pill-desc" id="txtModeEndlessDesc">Kocok seluruh kartu sepuasnya tanpa batas</div>
+          </div>
+        </div>
+
+        <!-- Pass and Play Toggle -->
+        <div style="margin-top:12px;background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:16px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:1.2rem">👥</span>
+            <div>
+              <div style="font-size:0.88rem;font-weight:700" id="txtPassPlayTitle">Pelacak Giliran (Pass & Play)</div>
+              <div style="font-size:0.75rem;color:var(--text-secondary)" id="txtPassPlayDesc">Tukar giliran pemain otomatis di tiap kartu</div>
+            </div>
+          </div>
+          <input type="checkbox" id="homeToggleTurns" style="width:20px;height:20px;cursor:pointer;accent-color:var(--deck-accent)" checked>
+        </div>
+      </section>
+
+      <!-- Deck Selection List -->
+      <section style="flex:1">
+        <div class="section-label">
+          <span id="labelDeckSelect">Pilih Kategori Deck</span>
+          <button id="homeOpenCustomDeckBtn" style="background:none;border:none;color:var(--deck-accent);font-size:0.75rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px">
+            + Buat Deck Sendiri
+          </button>
+        </div>
+
+        <div id="homeDecksContainer" class="home-decks-grid">
+          <!-- Injected dynamically by app.js -->
+        </div>
+      </section>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SCREEN 2: HALAMAN GAMEPLAY (KARTU 3D ARENA)  -->
+    <!-- ============================================ -->
+    <div id="gameView" class="view-screen is-hidden">
+      <!-- Game Header -->
+      <header class="app-header">
+        <div class="header-left">
+          <!-- Back to Home Button -->
+          <button id="btnBackToHome" class="icon-btn" title="Kembali ke Pilih Game">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+
+          <!-- Deck Badge & Quick Change -->
+          <div id="deckSelectorBtn" class="brand-badge" title="Ganti Deck">
+            <span class="brand-deck-tag" id="deckTagBadge">Pasangan</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <!-- Audio toggle -->
+          <button id="gameSoundToggleBtn" class="icon-btn" title="Suara FX" aria-label="Toggle Sound">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+          </button>
+
+          <!-- Language toggle -->
+          <button id="gameLangToggleBtn" class="icon-btn" style="font-weight:700;font-size:0.75rem" title="Ganti Bahasa (ID / EN)">
+            ID
+          </button>
+
+          <!-- Settings menu -->
+          <button id="menuBtn" class="icon-btn" title="Pengaturan & Panduan" aria-label="Settings">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Session Progress & Turn Track -->
+      <div class="session-info-bar">
+        <div class="session-meta-row">
+          <div id="playerPill" class="player-turn-pill">
+            <span class="player-dot"></span>
+            <span>Giliran: <strong id="playerName">Pemain 1</strong></span>
+          </div>
+          <div id="progressText" style="font-weight:700;letter-spacing:0.02em;color:var(--text-secondary)">1 / 21</div>
+        </div>
+        <div class="progress-track">
+          <div id="progressFill" class="progress-fill" style="width: 5%;"></div>
+        </div>
+      </div>
+
+      <!-- 3D Card Stack Arena -->
+      <main class="cards-arena" id="cardsArena">
+        <!-- Injected dynamically by app.js -->
+      </main>
+
+      <!-- Bottom Controls Dock -->
+      <nav class="controls-dock">
+        <!-- Previous Question -->
+        <button id="btnPrev" class="dock-btn dock-btn-sm" title="Kartu Sebelumnya (Panah Kiri / Atas)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+
+        <!-- Flip 3D Card -->
+        <button id="btnFlip" class="dock-btn dock-btn-sm" title="Balik Kartu (Spasi)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        </button>
+
+        <!-- Bookmark Favorite -->
+        <button id="btnFav" class="dock-btn dock-btn-sm" title="Simpan ke Favorit">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        </button>
+
+        <!-- Next Card / Swipe -->
+        <button id="btnNext" class="dock-btn dock-btn-lg" title="Kartu Selanjutnya (Panah Kanan / Swipe)">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </nav>
+    </div>
+
+  </div>
+
+  <!-- Decks Switcher Modal Sheet -->
+  <div id="decksModal" class="modal-overlay">
+    <div class="modal-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3 class="sheet-title">Ganti Kategori Deck</h3>
+        <button class="icon-btn modal-close-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      
+      <div style="margin-bottom: 12px;">
+        <button id="openCustomDeckBtn" class="btn-primary" style="width:100%;background:rgba(255,255,255,0.08);border:1px dashed var(--border-highlight);color:#fff">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          + Buat Deck Kustom Sendiri
+        </button>
+      </div>
+
+      <div class="sheet-body" id="decksListContainer">
+        <!-- Rendered by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal Sheet -->
+  <div id="settingsModal" class="modal-overlay">
+    <div class="modal-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3 class="sheet-title">Pengaturan Permainan</h3>
+        <button class="icon-btn modal-close-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="sheet-body">
+        <!-- Game Mode Selection -->
+        <div>
+          <label style="display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:6px;font-weight:600">Mode Permainan</label>
+          <select id="gameModeSelect" class="input-field" style="cursor:pointer">
+            <option value="twenty_one">Klasik 21 Pertanyaan (Target 21 Kartu)</option>
+            <option value="endless">Mode Tanpa Batas (Endless Deck)</option>
+          </select>
+        </div>
+
+        <!-- Pass and play turns -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border-subtle)">
+          <div>
+            <div style="font-weight:600;font-size:0.95rem">Pelacak Giliran (Pass & Play)</div>
+            <div style="font-size:0.8rem;color:var(--text-secondary)">Ganti giliran pemain otomatis di setiap kartu</div>
+          </div>
+          <input type="checkbox" id="toggleTurns" style="width:20px;height:20px;cursor:pointer;accent-color:var(--deck-accent)">
+        </div>
+
+        <!-- Controls Guide -->
+        <div style="padding:14px;background:rgba(255,255,255,0.03);border-radius:14px;border:1px solid var(--border-subtle)">
+          <div style="font-size:0.85rem;font-weight:700;color:var(--deck-accent);margin-bottom:8px">Pintasan Keyboard & Gesture</div>
+          <ul style="font-size:0.8rem;color:var(--text-secondary);list-style:none;line-height:1.7">
+            <li>👉 <strong>Geser Kanan (atau Panah Kanan):</strong> Jawab & Lanjut</li>
+            <li>👈 <strong>Geser Kiri (atau Panah Kiri):</strong> Lewati Kartu</li>
+            <li>🔄 <strong>Ketuk Kartu (atau Spasi):</strong> Balik Kartu 3D</li>
+            <li>⬆️ <strong>Panah Atas:</strong> Kartu Sebelumnya</li>
+          </ul>
+        </div>
+
+        <div style="text-align:center;padding:10px 0;font-size:0.75rem;color:var(--text-tertiary)">
+          Quriosity • Conversation Card Game
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Favorites Modal Sheet -->
+  <div id="favoritesModal" class="modal-overlay">
+    <div class="modal-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3 class="sheet-title">Pertanyaan Tersimpan</h3>
+        <button class="icon-btn modal-close-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="sheet-body" id="favoritesListContainer">
+        <!-- Injected by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Deck Modal Sheet -->
+  <div id="customDeckModal" class="modal-overlay">
+    <div class="modal-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3 class="sheet-title">Buat Deck Baru</h3>
+        <button class="icon-btn modal-close-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <form id="customDeckForm" class="sheet-body">
+        <div>
+          <label style="display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:6px;font-weight:600">Nama Deck</label>
+          <input type="text" id="customDeckTitle" class="input-field" placeholder="Misal: Cerita Sahabat SMA" required>
+        </div>
+        <div>
+          <label style="display:block;font-size:0.85rem;color:var(--text-secondary);margin-bottom:6px;font-weight:600">Daftar Pertanyaan (Satu baris per pertanyaan)</label>
+          <textarea id="customDeckQuestions" class="textarea-field" placeholder="Tulis pertanyaanmu di sini...&#10;Contoh: Momen terlucu saat kita bolos sekolah?&#10;Contoh: Siapa sahabat yang paling kamu kagumi?" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="margin-top:8px">
+          Simpan & Mainkan Deck
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- App Script (ES Module) -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

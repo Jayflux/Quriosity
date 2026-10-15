@@ -1,0 +1,12 @@
+{
+  "name": "quriosity-web",
+  "version": "1.0.0",
+  "description": "Quriosity - Conversation Card Games web edition",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["quriosity", "card-game", "icebreaker", "couples", "deep-convos", "questions"],
+  "author": "Quriosity",
+  "license": "MIT"
+}
